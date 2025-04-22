@@ -7,6 +7,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+
 import com.iBai.ecommerce.persistence.PMF;
 
 /**
@@ -17,8 +18,19 @@ import com.iBai.ecommerce.persistence.PMF;
  * @param <ID> El tipo de identificador único de la entidad
  */
 public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
+
     protected PersistenceManager pm;
     protected Class<T> entityClass;
+
+    /**
+     * Constructor para pruebas que permite inyectar el PersistenceManager
+     * @param entityClass la clase de la entidad
+     * @param pm el PersistenceManager a usar
+     */
+    protected AbstractDAO(Class<T> entityClass, PersistenceManager pm) {
+        this.entityClass = entityClass;
+        this.pm = pm;
+    }
     
     /**
      * Constructor que inicializa el PersistenceManager y la clase de entidad

@@ -22,7 +22,15 @@ public class AuthController {
     private final AuthService authService;
     
     public AuthController() {
-        this.authService = new AuthService();
+        this.authService = getAuthService();
+    }
+    
+    /**
+     * Método protegido para permitir la inyección de mocks en las pruebas
+     * @return instancia de AuthService
+     */
+    protected AuthService getAuthService() {
+        return new AuthService();
     }
     
     /**

@@ -4,19 +4,19 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
     version="2.0">
     
-    <persistence-unit name="ecommerce-pu">
+    <persistence-unit name="ecommerceDB">
         <!-- Lista de todas las clases de entidades -->
-        <class>com.ecommerce.model.Usuario</class>
-        <class>com.ecommerce.model.Direccion</class>
-        <class>com.ecommerce.model.MetodoPago</class>
-        <class>com.ecommerce.model.Categoria</class>
-        <class>com.ecommerce.model.Producto</class>
-        <class>com.ecommerce.model.ImagenProducto</class>
-        <class>com.ecommerce.model.Valoracion</class>
-        <class>com.ecommerce.model.Carrito</class>
-        <class>com.ecommerce.model.ItemCarrito</class>
-        <class>com.ecommerce.model.Pedido</class>
-        <class>com.ecommerce.model.DetallePedido</class>
+        <class>com.iBai.ecommerce.model.Usuario</class>
+        <class>com.iBai.ecommerce.model.Direccion</class>
+        <class>com.iBai.ecommerce.model.MetodoPago</class>
+        <class>com.iBai.ecommerce.model.Categoria</class>
+        <class>com.iBai.ecommerce.model.Producto</class>
+        <class>com.iBai.ecommerce.model.ImagenProducto</class>
+        <class>com.iBai.ecommerce.model.Valoracion</class>
+        <class>com.iBai.ecommerce.model.Carrito</class>
+        <class>com.iBai.ecommerce.model.ItemCarrito</class>
+        <class>com.iBai.ecommerce.model.Pedido</class>
+        <class>com.iBai.ecommerce.model.DetallePedido</class>
         
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         
@@ -26,7 +26,7 @@
             <property name="javax.jdo.option.ConnectionDriverName" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.jdo.option.ConnectionURL" value="jdbc:mysql://localhost:3306/ecommercedb?useSSL=false&amp;serverTimezone=UTC"/>
             <property name="javax.jdo.option.ConnectionUserName" value="root"/>
-            <property name="javax.jdo.option.ConnectionPassword" value="password"/>
+            <property name="javax.jdo.option.ConnectionPassword" value="root"/>
             
             <!-- Configuración del esquema -->
             <property name="datanucleus.schema.autoCreateAll" value="false"/>

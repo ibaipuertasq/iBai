@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.tuempresa.ecommerce</groupId>
     <artifactId>ecommerce-app</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -24,7 +23,7 @@
         <mysql.version>8.0.28</mysql.version>
         <datanucleus.version>5.2.1</datanucleus.version>
         <datanucleus.jdo.version>3.2.0-release</datanucleus.jdo.version>
-        <jetty.version>11.0.15</jetty.version>
+         <jetty.version>9.4.56.v20240826</jetty.version>
         <junit.version>5.9.3</junit.version>
         <mockito.version>5.4.0</mockito.version>
         <log4j.version>2.20.0</log4j.version>
@@ -61,26 +60,26 @@
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- DataNucleus JDO -->
-        <dependency>
-            <groupId>org.datanucleus</groupId>
-            <artifactId>javax.jdo</artifactId>
-            <version>${datanucleus.jdo.version}</version>
-        </dependency>
+        <!-- JDO y DataNucleus -->
         <dependency>
             <groupId>org.datanucleus</groupId>
             <artifactId>datanucleus-core</artifactId>
-            <version>${datanucleus.version}</version>
+            <version>5.2.8</version>
         </dependency>
         <dependency>
             <groupId>org.datanucleus</groupId>
             <artifactId>datanucleus-api-jdo</artifactId>
-            <version>${datanucleus.version}</version>
+            <version>5.2.8</version>
         </dependency>
         <dependency>
             <groupId>org.datanucleus</groupId>
             <artifactId>datanucleus-rdbms</artifactId>
-            <version>${datanucleus.version}</version>
+            <version>5.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.jdo</groupId>
+            <artifactId>jdo-api</artifactId>
+            <version>3.2.1</version>
         </dependency>
 
         <!-- MySQL Connector -->
@@ -107,29 +106,45 @@
             <version>${log4j.version}</version>
         </dependency>
 
-        <!-- Testing -->
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
+            <version>4.6.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.version}</version>
+            <version>4.6.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Jersey Test Framework -->
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework</groupId>
+            <artifactId>jersey-test-framework-core</artifactId>
+            <version>2.35</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+            <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+            <version>2.35</version>
             <scope>test</scope>
         </dependency>
 
@@ -159,6 +174,21 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- H2 Database para pruebas -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.214</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
         
@@ -183,7 +213,7 @@
                 <version>${jetty.version}</version>
                 <configuration>
                     <webAppConfig>
-                        <contextPath>/ecommerce</contextPath>
+                        <contextPath>/</contextPath>
                     </webAppConfig>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
                 </configuration>
@@ -196,8 +226,7 @@
                 <version>5.2.1</version>
                 <configuration>
                     <api>JDO</api>
-                    <props>${basedir}/src/main/resources/datanucleus.properties</props>
-                    <log4jConfiguration>${basedir}/src/main/resources/log4j2.xml</log4jConfiguration>
+                    <persistenceUnitName>ecommerceDB</persistenceUnitName>
                     <verbose>true</verbose>
                 </configuration>
                 <executions>
@@ -209,7 +238,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+                
             <!-- JaCoCo para cobertura de tests -->
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -247,3 +276,4 @@
         </plugins>
     </build>
 </project>
+

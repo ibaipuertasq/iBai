@@ -1,0 +1,55 @@
+/* Estilos generales */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    padding: 1.5rem;
+}
+
+/* Estilos para formularios */
+.form-control:focus {
+    border-color: #c2ff51;
+    box-shadow: 0 0 0 0.25rem #87ffc340;
+}
+
+/* Animación para alertas */
+.alert {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 576px) {
+    .card {
+        margin: 0 10px;
+    }
+    
+    .container {
+        padding-top: 1rem !important;
+    }
+}
+
+/* Estilos para el formulario de registro */
+#register-form .password-strength {
+    height: 5px;
+    margin-top: 5px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+}
+
+#register-form .password-strength-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+/* Estilos para el mensaje de error */
+.error-shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+    20%, 40%, 60%, 80% {transform: translateX(5px);}
+}
