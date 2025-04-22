@@ -1,4 +1,4 @@
-package com.iBai.ecommerce.dao;
+package com.iBai.ecommerce.persistence;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

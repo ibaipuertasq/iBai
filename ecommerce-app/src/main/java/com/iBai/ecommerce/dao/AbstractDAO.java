@@ -7,6 +7,8 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+import com.iBai.ecommerce.persistence.PMF;
+
 /**
  * Implementación abstracta de la interfaz GenericDAO que proporciona
  * operaciones CRUD básicas para cualquier entidad.
