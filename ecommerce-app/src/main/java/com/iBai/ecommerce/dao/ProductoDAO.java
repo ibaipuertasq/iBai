@@ -1,9 +1,9 @@
 package com.iBai.ecommerce.dao;
 
-
 import com.iBai.ecommerce.model.Categoria;
 import com.iBai.ecommerce.model.Producto;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.jdo.Query;
@@ -47,7 +47,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.declareParameters("Long idParam");
         
         try {
-            return (List<Producto>) query.execute(categoriaId);
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute(categoriaId);
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -67,7 +72,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.declareParameters("java.math.BigDecimal precioMinParam, java.math.BigDecimal precioMaxParam");
         
         try {
-            return (List<Producto>) query.execute(precioMin, precioMax);
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute(precioMin, precioMax);
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -83,7 +93,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.setFilter("destacado == true && activo == true");
         
         try {
-            return (List<Producto>) query.execute();
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute();
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -99,7 +114,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.setFilter("stock > 0 && activo == true");
         
         try {
-            return (List<Producto>) query.execute();
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute();
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -115,7 +135,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.setFilter("stock <= 0 && activo == true");
         
         try {
-            return (List<Producto>) query.execute();
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute();
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -134,7 +159,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.declareParameters("String terminoParam");
         
         try {
-            return (List<Producto>) query.execute(termino);
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute(termino);
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -153,7 +183,12 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
         query.declareParameters("java.util.Date fechaInicioParam, java.util.Date fechaFinParam");
         
         try {
-            return (List<Producto>) query.execute(fechaInicio, fechaFin);
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute(fechaInicio, fechaFin);
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
@@ -234,4 +269,71 @@ public class ProductoDAO extends AbstractDAO<Producto, Long> {
             });
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public List<Producto> findAllWithImages() {
+        Query<Producto> query = pm.newQuery(Producto.class);
+        query.setResult("this, imagenes");
+        try {
+            List<Producto> resultados = new ArrayList<>();
+            List<Producto> queryResult = (List<Producto>) query.execute();
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
+        } finally {
+            query.closeAll();
+        }
+    }
+
+    /**
+     * Encuentra productos por categoría incluyendo subcategorías
+     * @param categoriaId ID de la categoría
+     * @param incluirSubcategorias Si es true, incluye productos de subcategorías
+     * @return Lista de productos
+     */
+    @SuppressWarnings("unchecked")
+    public List<Producto> findByCategoriaRecursivo(Long categoriaId) {
+        List<Producto> resultado = new ArrayList<>();
+        
+        try {
+            // Obtenemos todas las subcategorías de la categoría
+            CategoriaDAO categoriaDAO = new CategoriaDAO();
+            List<Long> categoriaIds = new ArrayList<>();
+            categoriaIds.add(categoriaId); // Añadir la categoría principal
+            
+            obtenerSubcategoriasIds(categoriaId, categoriaIds, categoriaDAO);
+            
+            // Ahora consultamos productos que pertenezcan a cualquiera de estas categorías
+            for (Long id : categoriaIds) {
+                resultado.addAll(findByCategoria(id));
+            }
+            
+            return resultado;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar productos por categoría de forma recursiva", e);
+        }
+    }
+
+// Método auxiliar para obtener todos los IDs de subcategorías recursivamente
+private void obtenerSubcategoriasIds(Long categoriaId, List<Long> categoriaIds, CategoriaDAO categoriaDAO) {
+    Query<Categoria> query = pm.newQuery(Categoria.class);
+    query.setFilter("categoriaPadre.id == idParam");
+    query.declareParameters("Long idParam");
+    
+    try {
+        List<Categoria> subcategorias = (List<Categoria>) query.execute(categoriaId);
+        
+        if (subcategorias != null && !subcategorias.isEmpty()) {
+            for (Categoria subcategoria : subcategorias) {
+                Long subcategoriaId = subcategoria.getId();
+                categoriaIds.add(subcategoriaId);
+                // Llamada recursiva para las subcategorías
+                obtenerSubcategoriasIds(subcategoriaId, categoriaIds, categoriaDAO);
+            }
+        }
+    } finally {
+        query.closeAll();
+    }
+}
 }

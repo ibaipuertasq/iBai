@@ -1,29 +1,29 @@
 package com.iBai.ecommerce.rest.exception;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Modelo para respuestas de error de la API
+ * Modelo para respuestas de error en la API
  */
 public class ApiError {
     
     private int status;
     private String error;
     private String message;
-    private Date timestamp;
+    private long timestamp;
+    private List<String> details = new ArrayList<>();
     
     public ApiError() {
-        this.timestamp = new Date();
     }
     
-    public ApiError(int status, String error, String message) {
-        this();
+    public ApiError(int status, String error, String message, long timestamp) {
         this.status = status;
         this.error = error;
         this.message = message;
+        this.timestamp = timestamp;
     }
     
-    // Getters y setters
     public int getStatus() {
         return status;
     }
@@ -48,11 +48,23 @@ public class ApiError {
         this.message = message;
     }
     
-    public Date getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
     
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+    
+    public List<String> getDetails() {
+        return details;
+    }
+    
+    public void setDetails(List<String> details) {
+        this.details = details;
+    }
+    
+    public void addDetail(String detail) {
+        this.details.add(detail);
     }
 }

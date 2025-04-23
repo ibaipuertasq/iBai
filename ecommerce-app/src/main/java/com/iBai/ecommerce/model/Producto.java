@@ -1,97 +1,87 @@
 package com.iBai.ecommerce.model;
 
-
-
-
+import javax.jdo.annotations.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.jdo.annotations.*;
 
 /**
- * Entidad que representa un producto en el sistema de e-commerce.
+ * Entidad que representa un producto en el e-commerce.
  */
 @PersistenceCapable(table = "producto")
 public class Producto {
-    
+
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Long id;
-    
-    @Column(name = "codigo_sku")
-    @Persistent(nullValue = NullValue.EXCEPTION)
-    @Unique
-    private String codigoSku;
-    
+
     @Persistent(nullValue = NullValue.EXCEPTION)
     private String nombre;
-    
-    @Persistent(nullValue = NullValue.EXCEPTION)
+
+    @Persistent
     private String descripcion;
-    
+
+    @Persistent(nullValue = NullValue.EXCEPTION, column = "codigoSku")
+    private String codigoSku;
+
     @Persistent(nullValue = NullValue.EXCEPTION)
     private BigDecimal precio;
-    
-    @Column(name = "precio_oferta")
-    @Persistent
+
+    @Persistent(column = "precio_oferta")
     private BigDecimal precioOferta;
-    
+
     @Persistent
-    private Integer stock = 0;
-    
-    @Column(name = "categoria_id")
-    @Persistent
+    private Integer stock;
+
+    @Persistent(column = "categoria_id")
     private Categoria categoria;
-    
-    @Column(name = "fecha_creacion")
-    @Persistent(nullValue = NullValue.EXCEPTION)
-    private Date fechaCreacion;
-    
-    @Column(name = "ultima_actualizacion")
-    @Persistent
-    private Date ultimaActualizacion;
-    
-    @Persistent
-    private Boolean activo = true;
-    
+
     @Persistent
     private Boolean destacado = false;
-    
+
+    @Persistent
+    private Boolean activo = true;
+
+    @Persistent(column = "fecha_creacion")
+    private Date fechaCreacion;
+
+    @Persistent(column = "ultima_actualizacion")
+    private Date ultimaActualizacion;
+
+    @Persistent
+    private String marca;
+
     @Persistent
     private BigDecimal peso;
-    
+
     @Persistent
     private String dimensiones;
-    
+
+    // Relación con ImagenProducto
+    // Relación con ImagenProducto
     @Persistent(mappedBy = "producto")
-    private List<ImagenProducto> imagenes;
-    
-    @Persistent(mappedBy = "producto")
-    private List<Valoracion> valoraciones;
-    
+    private List<ImagenProducto> imagenes = new ArrayList<>();
+
     public Producto() {
-        this.fechaCreacion = new Date();
+        // Convertir LocalDateTime a Date
+        LocalDateTime now = LocalDateTime.now();
+        this.fechaCreacion = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        this.ultimaActualizacion = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        this.stock = 0;
         this.activo = true;
         this.destacado = false;
-        this.stock = 0;
     }
-    
+
     // Getters y setters
-    
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getCodigoSku() {
-        return codigoSku;
-    }
-
-    public void setCodigoSku(String codigoSku) {
-        this.codigoSku = codigoSku;
     }
 
     public String getNombre() {
@@ -108,6 +98,14 @@ public class Producto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getCodigoSku() {
+        return codigoSku;
+    }
+
+    public void setCodigoSku(String codigoSku) {
+        this.codigoSku = codigoSku;
     }
 
     public BigDecimal getPrecio() {
@@ -142,6 +140,22 @@ public class Producto {
         this.categoria = categoria;
     }
 
+    public Boolean getDestacado() {
+        return destacado;
+    }
+
+    public void setDestacado(Boolean destacado) {
+        this.destacado = destacado;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
@@ -158,20 +172,12 @@ public class Producto {
         this.ultimaActualizacion = ultimaActualizacion;
     }
 
-    public Boolean getActivo() {
-        return activo;
+    public String getMarca() {
+        return marca;
     }
 
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
-
-    public Boolean getDestacado() {
-        return destacado;
-    }
-
-    public void setDestacado(Boolean destacado) {
-        this.destacado = destacado;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 
     public BigDecimal getPeso() {
@@ -198,14 +204,14 @@ public class Producto {
         this.imagenes = imagenes;
     }
 
-    public List<Valoracion> getValoraciones() {
-        return valoraciones;
+    /**
+     * Calcula el precio actual del producto considerando si hay oferta activa
+     * @return precio actual del producto
+     */
+    public BigDecimal getPrecioActual() {
+        return precioOferta != null ? precioOferta : precio;
     }
 
-    public void setValoraciones(List<Valoracion> valoraciones) {
-        this.valoraciones = valoraciones;
-    }
-    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

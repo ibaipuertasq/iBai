@@ -220,6 +220,7 @@
             </plugin>
             
             <!-- Enhancer de DataNucleus -->
+            <!-- DataNucleus Enhancer Plugin -->
             <plugin>
                 <groupId>org.datanucleus</groupId>
                 <artifactId>datanucleus-maven-plugin</artifactId>
@@ -228,6 +229,8 @@
                     <api>JDO</api>
                     <persistenceUnitName>ecommerceDB</persistenceUnitName>
                     <verbose>true</verbose>
+                    <enhanceAfterCompile>true</enhanceAfterCompile>
+                    <metadataIncludes>**/*.class</metadataIncludes>
                 </configuration>
                 <executions>
                     <execution>

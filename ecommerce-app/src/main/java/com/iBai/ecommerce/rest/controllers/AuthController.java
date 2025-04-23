@@ -45,8 +45,11 @@ public class AuthController {
             AuthResponse response = authService.registrar(request);
             return Response.status(Response.Status.CREATED).entity(response).build();
         } catch (Exception e) {
-            ApiError error = new ApiError(Response.Status.BAD_REQUEST.getStatusCode(), 
-                                        "Error de registro", e.getMessage());
+            ApiError error = new ApiError();
+            error.setStatus(Response.Status.BAD_REQUEST.getStatusCode());
+            error.setError("Error de registro");
+            error.setMessage(e.getMessage());
+            error.setTimestamp(System.currentTimeMillis());
             return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
         }
     }
@@ -63,8 +66,11 @@ public class AuthController {
             AuthResponse response = authService.login(request);
             return Response.ok(response).build();
         } catch (Exception e) {
-            ApiError error = new ApiError(Response.Status.UNAUTHORIZED.getStatusCode(), 
-                                        "Error de autenticación", e.getMessage());
+            ApiError error = new ApiError();
+            error.setStatus(Response.Status.UNAUTHORIZED.getStatusCode());
+            error.setError("Error de autenticación");
+            error.setMessage(e.getMessage());
+            error.setTimestamp(System.currentTimeMillis());
             return Response.status(Response.Status.UNAUTHORIZED).entity(error).build();
         }
     }
@@ -87,8 +93,11 @@ public class AuthController {
         if (esValido) {
             return Response.ok().entity("{\"valid\": true}").build();
         } else {
-            ApiError error = new ApiError(Response.Status.UNAUTHORIZED.getStatusCode(), 
-                                        "Token inválido", "El token proporcionado no es válido o ha expirado");
+            ApiError error = new ApiError();
+            error.setStatus(Response.Status.UNAUTHORIZED.getStatusCode());
+            error.setError("Token inválido");
+            error.setMessage("El token proporcionado no es válido o ha expirado");
+            error.setTimestamp(System.currentTimeMillis());
             return Response.status(Response.Status.UNAUTHORIZED).entity(error).build();
         }
     }

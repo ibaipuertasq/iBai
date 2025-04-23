@@ -2,6 +2,7 @@ package com.iBai.ecommerce.dao;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -55,12 +56,17 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     public List<T> findAll() {
         Query<T> query = pm.newQuery(entityClass);
         try {
-            return (List<T>) query.execute();
+            List<T> resultados = new ArrayList<>();
+            List<T> queryResult = (List<T>) query.execute();
+            if (queryResult != null) {
+                resultados.addAll(queryResult);
+            }
+            return resultados;
         } finally {
             query.closeAll();
         }
     }
-    
+
     @Override
     public T save(T entity) {
         Transaction tx = pm.currentTransaction();

@@ -1,7 +1,5 @@
 package com.iBai.ecommerce.model;
 
-
-
 import javax.jdo.annotations.*;
 
 /**
@@ -9,31 +7,28 @@ import javax.jdo.annotations.*;
  */
 @PersistenceCapable(table = "imagen_producto")
 public class ImagenProducto {
-    
+
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Long id;
-    
-    @Column(name = "producto_id")
-    @Persistent(nullValue = NullValue.EXCEPTION)
+
+    @Persistent(nullValue = NullValue.EXCEPTION, column = "producto_id")
     private Producto producto;
-    
+
     @Persistent(nullValue = NullValue.EXCEPTION)
     private String url;
-    
-    @Column(name = "es_principal")
-    @Persistent
+
+    @Persistent(column = "es_principal")
     private Boolean esPrincipal = false;
-    
+
     @Persistent
     private Integer orden;
-    
+
     public ImagenProducto() {
         this.esPrincipal = false;
     }
-    
+
     // Getters y setters
-    
     public Long getId() {
         return id;
     }
