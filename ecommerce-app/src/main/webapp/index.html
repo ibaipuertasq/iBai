@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iBai</title>
+    <title>iBai - Tu tienda online de confianza</title>
     <link rel="icon" href="images/logoiBai.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/styles.css">
+    
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="images/logoiBai.png" alt="iBai Logo" style="height: 40px;">
+                <img src="images/logoiBai.png" alt="iBai Logo" class="logo-navbar">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -31,22 +33,27 @@
                 </ul>
                 <ul class="navbar-nav" id="auth-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Iniciar Sesión</a>
+                        <a class="nav-link" href="login.html">
+                            <i class="bi bi-person"></i> Iniciar Sesión
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="register.html">Registrarse</a>
+                        <a class="nav-link" href="register.html">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </a>
                     </li>
                 </ul>
                 <ul class="navbar-nav d-none" id="user-menu">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="user-dropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i>
                             <span id="user-name">Usuario</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Mis Pedidos</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person-badge me-2"></i>Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-box2 me-2"></i>Mis Pedidos</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" id="logout-btn">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -54,17 +61,167 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <div class="jumbotron">
-            <h1 class="display-4">¡Bienvenido a nuestra tienda en línea!</h1>
-            <p class="lead">Encuentra los mejores productos al mejor precio.</p>
-            <hr class="my-4">
-            <p>Explora nuestro catálogo o regístrate para comenzar a comprar.</p>
-            <a class="btn btn-primary btn-lg" href="productos.html" role="button">Ver Productos</a>
+    <!-- Hero Section -->
+    <!-- Hero Section con diseño elegante y logo centrado -->
+    <section class="hero-section">
+        <!-- Logo centrado y elegante -->
+        <img src="images/logoiBai.png" alt="iBai Logo" class="hero-logo">
+        
+        <div class="container">
+            <div class="row justify-content-center justify-content-lg-start">
+                <div class="col-lg-7 col-md-10">
+                    <div class="hero-content">
+                        <h1 class="display-4 fw-bold">¡Bienvenido a iBai!</h1>
+                        <p class="lead">Tu tienda en línea de confianza, donde encontrarás los mejores productos al mejor precio. Una amplia variedad de artículos para satisfacer todas tus necesidades.</p>
+                        <div class="d-grid gap-3 d-md-flex">
+                            <a href="productos.html" class="btn btn-light btn-lg">
+                                <i class="bi bi-shop me-2"></i>Ver Productos
+                            </a>
+                            <a href="categorias.html" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-grid me-2"></i>Categorías
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img src="images/logoiBai.png" alt="iBai Logo" style="height: 500px;">
-    </div>
+    </section>
 
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="text-center mb-5">¿Por qué elegirnos?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+                        <h3>Envío Rápido</h3>
+                        <p>Entregamos tus pedidos en tiempo récord con nuestro servicio premium de envío.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h3>Garantía de Calidad</h3>
+                        <p>Todos nuestros productos pasan por un riguroso control de calidad.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                        <h3>Pago Seguro</h3>
+                        <p>Múltiples métodos de pago seguros para tu tranquilidad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section con iconos elegantes -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Explora Nuestras Categorías</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="categories-grid">
+                        <!-- Categoría: Electrónica -->
+                        <a href="categorias.html?id=1" class="category-card-home">
+                            <div class="category-icon-large">
+                                <i class="bi bi-laptop"></i>
+                            </div>
+                            <h3 class="category-name">Electrónica</h3>
+                            <p class="category-description">Descubre los últimos avances tecnológicos</p>
+                        </a>
+                        
+                        <!-- Categoría: Hogar y Jardín -->
+                        <a href="categorias.html?id=2" class="category-card-home">
+                            <div class="category-icon-large">
+                                <i class="bi bi-house"></i>
+                            </div>
+                            <h3 class="category-name">Hogar y Jardín</h3>
+                            <p class="category-description">Todo para tu hogar y espacio exterior</p>
+                        </a>
+                        
+                        <!-- Categoría: Moda -->
+                        <a href="categorias.html?id=3" class="category-card-home">
+                            <div class="category-icon-large">
+                                <i class="bi bi-bag"></i>
+                            </div>
+                            <h3 class="category-name">Moda</h3>
+                            <p class="category-description">Las últimas tendencias en ropa y accesorios</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a href="categorias.html" class="btn btn-primary btn-lg">
+                    <i class="bi bi-grid me-2"></i>Ver Todas las Categorías
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="mb-4">¿Listo para empezar a comprar?</h2>
+            <p class="lead mb-4">Regístrate ahora y disfruta de ofertas exclusivas.</p>
+            <a href="register.html" class="btn btn-light btn-lg">Crear Cuenta</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <img src="images/logoiBai.png" alt="iBai Logo" style="height: 80px; margin-bottom: 15px;">
+                    <p>Tu tienda en línea de confianza, con los mejores productos al mejor precio.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5>Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white">Inicio</a></li>
+                        <li><a href="productos.html" class="text-white">Productos</a></li>
+                        <li><a href="categorias.html" class="text-white">Categorías</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5>Ayuda</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Centro de ayuda</a></li>
+                        <li><a href="#" class="text-white">Envíos y devoluciones</a></li>
+                        <li><a href="#" class="text-white">Términos y condiciones</a></li>
+                        <li><a href="#" class="text-white">Política de privacidad</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-geo-alt me-2"></i> Calle Ejemplo, 123, Ciudad</li>
+                        <li><i class="bi bi-telephone me-2"></i> +34 123 456 789</li>
+                        <li><i class="bi bi-envelope me-2"></i> info@ibai.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 iBai. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/common.js"></script>

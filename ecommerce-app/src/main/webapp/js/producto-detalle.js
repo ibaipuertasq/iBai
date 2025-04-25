@@ -1,5 +1,5 @@
 /**
- * Script para la página de detalle de producto
+ * Script mejorado para la página de detalle de producto
  */
 
 let productoId = null;
@@ -48,6 +48,9 @@ async function loadProductoDetalle(id) {
         
         // Cargar productos relacionados
         loadProductosRelacionados();
+        
+        // Cargar imágenes del producto
+        loadProductImages(id);
     } catch (error) {
         console.error('Error al cargar detalle del producto:', error);
         showErrorMessage('No se pudo cargar la información del producto. Intente nuevamente más tarde.');
@@ -65,7 +68,7 @@ async function loadProductosRelacionados() {
         
         // Mostrar indicador de carga
         productosRelacionados.innerHTML = `
-            <div class="col-12 text-center py-4">
+            <div class="text-center py-4 w-100">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Cargando...</span>
                 </div>
@@ -95,7 +98,7 @@ async function loadProductosRelacionados() {
     }
 }
 
-// Renderizar detalle del producto
+// Renderizar detalle del producto con el diseño mejorado
 function renderProductoDetalle(producto) {
     const disponible = producto.stock > 0;
     const precioOferta = producto.precioOferta !== null && producto.precioOferta < producto.precio;
@@ -103,27 +106,21 @@ function renderProductoDetalle(producto) {
     productoContent.innerHTML = `
         <div class="row">
             <!-- Imagen del producto -->
-            <div class="col-md-5 mb-4 mb-md-0">
+            <div class="col-md-6 mb-4 mb-md-0">
                 <div class="card">
-                    <div class="position-relative">
-                        <img src="${producto.imagen || 'images/producto-default.jpg'}" class="card-img-top"
-                            alt="${producto.nombre}" style="height: 400px; object-fit: contain;">
-                        ${precioOferta ? `
-                            <div class="position-absolute top-0 end-0 bg-danger text-white m-3 px-2 py-1 rounded">
-                                <span>Oferta</span>
+                    <div id="product-images-gallery" class="card-body p-0">
+                        <!-- Las imágenes se cargarán dinámicamente -->
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando imágenes...</span>
                             </div>
-                        ` : ''}
-                        ${!disponible ? `
-                            <div class="position-absolute top-0 start-0 bg-dark text-white m-3 px-2 py-1 rounded">
-                                <span>Sin stock</span>
-                            </div>
-                        ` : ''}
+                        </div>
                     </div>
                 </div>
             </div>
             
             <!-- Información del producto -->
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <h1 class="mb-3">${producto.nombre}</h1>
                 
                 <div class="mb-3">
@@ -143,7 +140,7 @@ function renderProductoDetalle(producto) {
                     </span>
                 </div>
                 
-                <div class="mb-4">
+                <div class="product-price-detail mb-4">
                     ${precioOferta ? `
                         <p class="text-decoration-line-through text-muted mb-1">${formatPrice(producto.precio)}</p>
                         <p class="fs-2 fw-bold text-danger">${formatPrice(producto.precioOferta)}</p>
@@ -203,58 +200,64 @@ function renderProductoDetalle(producto) {
     setupButtons(disponible);
 }
 
-// Renderizar productos relacionados
+// Renderizar productos relacionados con el nuevo formato estandarizado
+// Reemplaza la función renderProductosRelacionados en producto-detalle.js con esta versión
 function renderProductosRelacionados(productos) {
     productosRelacionados.innerHTML = '';
     
-    const row = document.createElement('div');
-    row.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4';
+    // Crear el grid container para los productos relacionados
+    const productsGrid = document.createElement('div');
+    productsGrid.className = 'products-grid';
     
     productos.forEach(producto => {
         const disponible = producto.stock > 0;
         const precioOferta = producto.precioOferta !== null && producto.precioOferta < producto.precio;
         
-        const col = document.createElement('div');
-        col.className = 'col';
-        col.innerHTML = `
-            <div class="card h-100">
-                <div class="position-relative">
-                    <img src="${producto.imagen || 'images/producto-default.jpg'}" class="card-img-top"
-                        alt="${producto.nombre}" style="height: 180px; object-fit: contain;">
-                    ${precioOferta ? `
-                        <div class="position-absolute top-0 end-0 bg-danger text-white m-2 px-2 py-1 rounded">
-                            <small>Oferta</small>
-                        </div>
-                    ` : ''}
-                    ${!disponible ? `
-                        <div class="position-absolute top-0 start-0 bg-dark text-white m-2 px-2 py-1 rounded">
-                            <small>Sin stock</small>
-                        </div>
-                    ` : ''}
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${producto.nombre}</h5>
-                    <div class="mb-2">
-                        ${precioOferta ? `
-                            <span class="text-decoration-line-through text-muted me-2">${formatPrice(producto.precio)}</span>
-                            <span class="fw-bold text-danger">${formatPrice(producto.precioOferta)}</span>
-                        ` : `
-                            <span class="fw-bold">${formatPrice(producto.precio)}</span>
-                        `}
-                    </div>
-                    <div class="mt-auto">
-                        <a href="producto-detalle.html?id=${producto.id}" class="btn btn-primary btn-sm d-block">
-                            <i class="bi bi-eye me-1"></i> Ver detalles
+        // Crear la tarjeta de producto con el formato estandarizado
+        const productCard = document.createElement('div');
+        productCard.className = `product-card ${!disponible ? 'opacity-75' : ''}`;
+        
+        // Estructura HTML estandarizada para los productos
+        productCard.innerHTML = `
+            <div class="product-img-container">
+                <img src="${producto.imagen || 'images/producto-default.jpg'}" 
+                     class="product-img" alt="${producto.nombre}">
+                ${precioOferta ? `
+                    <div class="product-badge product-badge-offer">Oferta</div>
+                ` : ''}
+                ${!disponible ? `
+                    <div class="product-badge product-badge-stock">Sin stock</div>
+                ` : ''}
+            </div>
+            <div class="product-body">
+                <h5 class="product-title">${producto.nombre}</h5>
+                ${producto.categoria ? `
+                    <div class="product-category">
+                        <a href="categorias.html?id=${producto.categoria.id}" class="text-decoration-none">
+                            <i class="bi bi-tag"></i> ${producto.categoria.nombre}
                         </a>
                     </div>
+                ` : ''}
+                <div class="product-price-container">
+                    ${precioOferta ? `
+                        <div class="product-price-original">${formatPrice(producto.precio)}</div>
+                        <div class="product-price product-price-offer">${formatPrice(producto.precioOferta)}</div>
+                    ` : `
+                        <div class="product-price">${formatPrice(producto.precio)}</div>
+                    `}
+                </div>
+                <div class="product-footer">
+                    <a href="producto-detalle.html?id=${producto.id}" class="btn btn-primary w-100">
+                        <i class="bi bi-eye me-1"></i> Ver detalles
+                    </a>
                 </div>
             </div>
         `;
         
-        row.appendChild(col);
+        productsGrid.appendChild(productCard);
     });
     
-    productosRelacionados.appendChild(row);
+    productosRelacionados.appendChild(productsGrid);
 }
 
 // Configurar eventos de botones
@@ -298,10 +301,105 @@ function updateBreadcrumb(producto) {
     }
 }
 
+// Cargar imágenes del producto
+async function loadProductImages(productoId) {
+    try {
+        const imagenes = await fetchAPI(`/productos/${productoId}/imagenes`);
+        renderProductImages(imagenes);
+    } catch (error) {
+        console.error('Error al cargar imágenes del producto:', error);
+        renderDefaultImage();
+    }
+}
+
+// Renderizar imágenes del producto
+function renderProductImages(imagenes) {
+    const imagesContainer = document.getElementById('product-images-gallery');
+    
+    if (!imagesContainer) {
+        console.error('El contenedor de imágenes no existe');
+        return;
+    }
+    
+    // Limpiar contenedor
+    imagesContainer.innerHTML = '';
+    
+    // Si no hay imágenes
+    if (!imagenes || imagenes.length === 0) {
+        renderDefaultImage();
+        return;
+    }
+    
+    // Buscar imagen principal o tomar la primera
+    const mainImage = imagenes.find(img => img.esPrincipal) || imagenes[0];
+    
+    // Crear contenedor para imagen principal con diseño mejorado
+    const mainImageContainer = document.createElement('div');
+    mainImageContainer.className = 'main-image-container position-relative';
+    mainImageContainer.innerHTML = `
+        <img src="${mainImage.url}" class="img-fluid w-100" 
+            alt="Imagen principal del producto" id="main-product-image"
+            style="height: 400px; object-fit: contain;">
+    `;
+    
+    // Añadir imagen principal al contenedor
+    imagesContainer.appendChild(mainImageContainer);
+    
+    // Si hay más de una imagen, crear galería de miniaturas
+    if (imagenes.length > 1) {
+        const thumbnailsContainer = document.createElement('div');
+        thumbnailsContainer.className = 'd-flex overflow-auto mt-3 p-2';
+        
+        // Crear miniaturas para todas las imágenes
+        imagenes.forEach(imagen => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = `thumbnail-item me-2 ${imagen.id === mainImage.id ? 'border border-primary' : ''}`;
+            thumbnail.style.width = '70px';
+            thumbnail.style.height = '70px';
+            thumbnail.style.cursor = 'pointer';
+            
+            thumbnail.innerHTML = `
+                <img src="${imagen.url}" class="img-fluid" alt="Miniatura del producto"
+                    style="width: 100%; height: 100%; object-fit: contain;">
+            `;
+            
+            // Evento para cambiar la imagen principal al hacer clic en una miniatura
+            thumbnail.addEventListener('click', function() {
+                document.getElementById('main-product-image').src = imagen.url;
+                // Quitar clase active de todas las miniaturas
+                document.querySelectorAll('.thumbnail-item').forEach(item => {
+                    item.classList.remove('border', 'border-primary');
+                });
+                // Añadir clase active a la miniatura seleccionada
+                thumbnail.classList.add('border', 'border-primary');
+            });
+            
+            thumbnailsContainer.appendChild(thumbnail);
+        });
+        
+        // Añadir contenedor de miniaturas
+        imagesContainer.appendChild(thumbnailsContainer);
+    }
+}
+
+// Mostrar imagen por defecto
+function renderDefaultImage() {
+    const imagesContainer = document.getElementById('product-images-gallery');
+    if (imagesContainer) {
+        imagesContainer.innerHTML = `
+            <div class="main-image-container">
+                <img src="images/producto-default.jpg" class="img-fluid w-100" 
+                    alt="Imagen no disponible"
+                    style="height: 400px; object-fit: contain;">
+            </div>
+        `;
+    }
+}
+
 // Mostrar indicador de carga
 function showLoadingIndicator() {
     productoContent.innerHTML = `
-        <div class="text-center py-5">
+        <div class="text-center py-5 w-100">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
@@ -324,128 +422,4 @@ function showErrorMessage(message) {
             </a>
         </div>
     `;
-}
-
-// Añadir esta función en producto-detalle.js
-async function loadProductImages(productoId) {
-    try {
-        const imagenes = await fetchAPI(`/productos/${productoId}/imagenes`);
-        renderProductImages(imagenes);
-    } catch (error) {
-        console.error('Error al cargar imágenes del producto:', error);
-        // Mostrar imagen por defecto o mensaje de error
-        renderDefaultImage();
-    }
-}
-
-// Función para renderizar las imágenes
-function renderProductImages(imagenes) {
-    // Contenedor para la galería de imágenes
-    const imagesContainer = document.getElementById('product-images-gallery');
-    
-    if (!imagesContainer) {
-        console.error('El contenedor de imágenes no existe');
-        return;
-    }
-    
-    // Limpiar contenedor
-    imagesContainer.innerHTML = '';
-    
-    // Si no hay imágenes
-    if (!imagenes || imagenes.length === 0) {
-        renderDefaultImage();
-        return;
-    }
-    
-    // Crear div para imagen principal
-    const mainImageContainer = document.createElement('div');
-    mainImageContainer.className = 'main-image-container mb-3';
-    
-    // Buscar imagen principal o tomar la primera
-    const mainImage = imagenes.find(img => img.esPrincipal) || imagenes[0];
-    
-    // Crear elemento para imagen principal
-    mainImageContainer.innerHTML = `
-        <img src="${mainImage.url}" class="img-fluid main-product-image" 
-            alt="Imagen principal del producto" id="main-product-image">
-    `;
-    
-    // Añadir imagen principal al contenedor
-    imagesContainer.appendChild(mainImageContainer);
-    
-    // Si hay más de una imagen, crear galería de miniaturas
-    if (imagenes.length > 1) {
-        const thumbnailsContainer = document.createElement('div');
-        thumbnailsContainer.className = 'thumbnails-container d-flex overflow-auto';
-        
-        // Crear miniaturas para todas las imágenes
-        imagenes.forEach(imagen => {
-            const thumbnail = document.createElement('div');
-            thumbnail.className = `thumbnail-item me-2 ${imagen.esPrincipal ? 'active' : ''}`;
-            thumbnail.innerHTML = `
-                <img src="${imagen.url}" class="img-thumbnail" alt="Miniatura del producto">
-            `;
-            
-            // Evento para cambiar la imagen principal al hacer clic en una miniatura
-            thumbnail.addEventListener('click', function() {
-                document.getElementById('main-product-image').src = imagen.url;
-                // Quitar clase active de todas las miniaturas
-                document.querySelectorAll('.thumbnail-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                // Añadir clase active a la miniatura seleccionada
-                thumbnail.classList.add('active');
-            });
-            
-            thumbnailsContainer.appendChild(thumbnail);
-        });
-        
-        // Añadir contenedor de miniaturas
-        imagesContainer.appendChild(thumbnailsContainer);
-    }
-}
-
-// Función para mostrar imagen por defecto
-function renderDefaultImage() {
-    const imagesContainer = document.getElementById('product-images-gallery');
-    if (imagesContainer) {
-        imagesContainer.innerHTML = `
-            <div class="main-image-container">
-                <img src="images/producto-default.jpg" class="img-fluid" alt="Imagen no disponible">
-            </div>
-        `;
-    }
-}
-
-// Modifica la función renderProductoDetalle para incluir el contenedor de imágenes
-function renderProductoDetalle(producto) {
-    // Tu código actual...
-    
-    // Añadir div para las imágenes en el HTML generado
-    productoContent.innerHTML = `
-        <div class="row">
-            <!-- Imágenes del producto -->
-            <div class="col-md-5 mb-4 mb-md-0">
-                <div class="card">
-                    <div id="product-images-gallery" class="card-body">
-                        <!-- Aquí se cargarán las imágenes -->
-                        <div class="text-center py-4">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Cargando imágenes...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Información del producto -->
-            <div class="col-md-7">
-                <!-- Resto del contenido del producto -->
-                <!-- ... -->
-            </div>
-        </div>
-    `;
-    
-    // Cargar imágenes después de renderizar el producto
-    loadProductImages(producto.id);
 }

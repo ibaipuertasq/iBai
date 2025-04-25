@@ -1,5 +1,5 @@
 /**
- * Script para la página de listado de productos
+ * Script mejorado para la página de listado de productos
  */
 
 // Variables de estado
@@ -182,7 +182,8 @@ async function loadProductos() {
     }
 }
 
-// Renderizar productos
+// Renderizar productos con el nuevo formato unificado
+// Reemplaza la función renderProductos en productos.js con esta versión
 function renderProductos(productos) {
     productosContainer.innerHTML = '';
     
@@ -206,55 +207,63 @@ function renderProductos(productos) {
         return;
     }
     
+    // Crear el grid container para los productos
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'products-grid';
+    
     productos.forEach(producto => {
         const disponible = producto.stock > 0;
         const precioOferta = producto.precioOferta !== null && producto.precioOferta < producto.precio;
         
-        const cardElement = document.createElement('div');
-        cardElement.className = 'col-md-6 col-lg-4 col-xl-3 mb-4';
-        cardElement.innerHTML = `
-            <div class="card h-100 ${disponible ? '' : 'opacity-75'}">
-                <div class="position-relative">
-                    <img src="${producto.imagen || 'images/producto-default.jpg'}" class="card-img-top" 
-                        alt="${producto.nombre}" style="height: 200px; object-fit: contain;">
-                    ${precioOferta ? `
-                        <div class="position-absolute top-0 end-0 bg-danger text-white m-2 px-2 py-1 rounded">
-                            <small>Oferta</small>
-                        </div>
-                    ` : ''}
-                    ${!disponible ? `
-                        <div class="position-absolute top-0 start-0 bg-dark text-white m-2 px-2 py-1 rounded">
-                            <small>Sin stock</small>
-                        </div>
-                    ` : ''}
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">${producto.nombre}</h5>
-                    <p class="card-text small text-muted mb-2">
-                        ${producto.categoria ? `<a href="categorias.html?id=${producto.categoria.id}" class="text-decoration-none">
+        const productCard = document.createElement('div');
+        productCard.className = `product-card ${!disponible ? 'opacity-75' : ''}`;
+        
+        // Estructura HTML mejorada para los productos
+        productCard.innerHTML = `
+            <div class="product-img-container">
+                <img src="${producto.imagen || 'images/producto-default.jpg'}" 
+                     class="product-img" alt="${producto.nombre}">
+                ${precioOferta ? `
+                    <div class="product-badge product-badge-offer">Oferta</div>
+                ` : ''}
+                ${!disponible ? `
+                    <div class="product-badge product-badge-stock">Sin stock</div>
+                ` : ''}
+            </div>
+            <div class="product-body">
+                <h5 class="product-title">${producto.nombre}</h5>
+                ${producto.categoria ? `
+                    <div class="product-category">
+                        <a href="categorias.html?id=${producto.categoria.id}" class="text-decoration-none">
                             <i class="bi bi-tag"></i> ${producto.categoria.nombre}
-                        </a>` : ''}
-                    </p>
-                    <div class="mb-2">
-                        ${precioOferta ? `
-                            <span class="text-decoration-line-through text-muted me-2">${formatPrice(producto.precio)}</span>
-                            <span class="fw-bold text-danger">${formatPrice(producto.precioOferta)}</span>
-                        ` : `
-                            <span class="fw-bold">${formatPrice(producto.precio)}</span>
-                        `}
-                    </div>
-                    <p class="card-text flex-grow-1 small">${producto.descripcion ? producto.descripcion.substring(0, 100) + (producto.descripcion.length > 100 ? '...' : '') : ''}</p>
-                    <div class="d-grid gap-2">
-                        <a href="producto-detalle.html?id=${producto.id}" class="btn btn-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i> Ver detalles
                         </a>
                     </div>
+                ` : ''}
+                <div class="product-price-container">
+                    ${precioOferta ? `
+                        <div class="product-price-original">${formatPrice(producto.precio)}</div>
+                        <div class="product-price product-price-offer">${formatPrice(producto.precioOferta)}</div>
+                    ` : `
+                        <div class="product-price">${formatPrice(producto.precio)}</div>
+                    `}
+                </div>
+                ${producto.descripcion ? `
+                    <div class="product-description">
+                        ${producto.descripcion.substring(0, 100)}${producto.descripcion.length > 100 ? '...' : ''}
+                    </div>
+                ` : ''}
+                <div class="product-footer">
+                    <a href="producto-detalle.html?id=${producto.id}" class="btn btn-primary w-100">
+                        <i class="bi bi-eye me-1"></i> Ver detalles
+                    </a>
                 </div>
             </div>
         `;
         
-        productosContainer.appendChild(cardElement);
+        gridContainer.appendChild(productCard);
     });
+    
+    productosContainer.appendChild(gridContainer);
 }
 
 // Renderizar paginación
@@ -366,7 +375,7 @@ function updateTotalCounter() {
 // Mostrar indicador de carga
 function showLoadingIndicator() {
     productosContainer.innerHTML = `
-        <div class="col-12 text-center py-5">
+        <div class="text-center py-5 w-100">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
@@ -378,7 +387,7 @@ function showLoadingIndicator() {
 // Mostrar mensaje de error
 function showErrorMessage(message) {
     productosContainer.innerHTML = `
-        <div class="col-12 text-center py-5">
+        <div class="text-center py-5 w-100">
             <div class="alert alert-danger">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
                 ${message}
